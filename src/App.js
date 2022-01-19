@@ -7,16 +7,9 @@ import { connect } from 'react-redux';
 import * as actions from './store/action';
 import './App.css';
 
-function App({ items, filter, deleteContact, addContact, filterContacts }) {
+function App({ filter, addContact, filterContacts }) {
   const changeFilter = e => {
     filterContacts(e.currentTarget.value);
-  };
-
-  const renderContacts = () => {
-    const toLowerCaseFilter = filter.toLowerCase();
-    return items.filter(el =>
-      el.name.toLowerCase().includes(toLowerCaseFilter),
-    );
   };
 
   return (
@@ -25,22 +18,18 @@ function App({ items, filter, deleteContact, addContact, filterContacts }) {
       <ContactForm onSubmit={addContact} />
       <h2 className="title">Contacts</h2>
       <Filter value={filter} onChange={changeFilter} />
-      <ContactsList
-        renderContacts={renderContacts()}
-        deleteContact={deleteContact}
-      />
+      <ContactsList />
     </main>
   );
 }
 
 const mapStateToProps = state => {
-  return state.contacts;
+  return state.app;
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addContact: (name, number) => dispatch(actions.addContact(name, number)),
-    deleteContact: id => dispatch(actions.deleteContact(id)),
     filterContacts: value => dispatch(actions.filterContacts(value)),
   };
 };

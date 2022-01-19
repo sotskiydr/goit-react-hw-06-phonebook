@@ -1,14 +1,16 @@
+import tp from './types';
+
 export const deleteContact = value => ({
-  type: 'delete',
+  type: tp.DELETE,
   payload: value,
 });
 
 export const filterContacts = value => ({
-  type: 'filter',
+  type: tp.FILTER,
   payload: value,
 });
 
 export const addContact = value => ({
-  type: 'add',
+  type: tp.ADD,
   payload: value,
 });

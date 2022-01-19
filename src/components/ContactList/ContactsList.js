@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactList.module.scss';
+import { connect } from 'react-redux';
+import * as actions from '../../store/action';
 
-const ContactsList = ({ renderContacts, deleteContact }) => {
+const ContactsList = ({ items, deleteContact }) => {
+  console.log(items);
   return (
     <ul className={styles.list}>
-      {renderContacts.map(el => {
+      {items.map(el => {
         return (
           <li className={styles.item} key={el.id}>
             <span className={styles.span}>
@@ -29,8 +32,21 @@ const ContactsList = ({ renderContacts, deleteContact }) => {
 };
 
 ContactsList.propTypes = {
-  renderContacts: PropTypes.array.isRequired,
   deleteContact: PropTypes.func.isRequired,
 };
 
-export default ContactsList;
+const mapStateToProps = ({ app }) => {
+  const toLowerCaseFilter = app.filter.toLowerCase();
+  const items = app.contacts.filter(el =>
+    el.name.toLowerCase().includes(toLowerCaseFilter),
+  );
+  return { items };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteContact: id => dispatch(actions.deleteContact(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);

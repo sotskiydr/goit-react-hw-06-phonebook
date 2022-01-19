@@ -1,38 +1,33 @@
 import { combineReducers } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import tp from './types';
+import { addContact, deleteContact, filterContacts } from './action';
 
-const contactsReducer = (state = [], { type, payload }) => {
-  switch (type) {
-    case tp.ADD:
-      const { name, number } = payload;
-      const newItem = {
-        id: nanoid(),
-        name: name,
-        number: number,
-      };
-      let isUnique = state.some(el => el.name === payload.items);
-      if (!isUnique) {
-        return [...state, newItem];
-      } else {
-        alert(`${name} is already in contacts`);
-      }
-      return;
-    case tp.DELETE:
-      return [...state.filter(el => el.id !== payload)];
-    default:
-      return state;
-  }
-};
+const contactsReducer = createReducer([], {
+  [addContact]: (state, { payload }) => {
+    const { name, number } = payload;
+    const newItem = {
+      id: nanoid(),
+      name: name,
+      number: number,
+    };
+    let isUnique = state.some(el => el.name === name);
+    console.log(isUnique);
+    if (!isUnique) {
+      return [...state, newItem];
+    } else {
+      alert(`${name} is already in contacts`);
+    }
+    return;
+  },
+  [deleteContact]: (state, { payload }) => [
+    ...state.filter(el => el.id !== payload),
+  ],
+});
 
-const filterReducer = (state = '', { type, payload }) => {
-  switch (type) {
-    case tp.FILTER:
-      return payload;
-    default:
-      return state;
-  }
-};
+const filterReducer = createReducer('', {
+  [filterContacts]: (_, { payload }) => payload,
+});
 
 export default combineReducers({
   contacts: contactsReducer,

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/action';
 
 const ContactsList = ({ items, deleteContact }) => {
-  console.log(items);
   return (
     <ul className={styles.list}>
       {items.map(el => {
@@ -33,6 +32,7 @@ const ContactsList = ({ items, deleteContact }) => {
 
 ContactsList.propTypes = {
   deleteContact: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = ({ app }) => {
